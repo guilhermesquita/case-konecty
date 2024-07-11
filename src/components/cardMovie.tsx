@@ -4,7 +4,6 @@ export interface ProductCardProps {
       brand: string;
       description: string;
       price: number;
-      category: string;
       image: string;
   }
 

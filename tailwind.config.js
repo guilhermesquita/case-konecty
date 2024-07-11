@@ -12,6 +12,9 @@ module.exports = {
         montserrat: ['Montserrat', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },
+      backgroundColor: {
+        blueButton: '#51BAE8'
+      }
     },
   },
   plugins: [],
