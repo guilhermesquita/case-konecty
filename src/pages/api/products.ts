@@ -7,14 +7,14 @@ const products = [
     description: "Women's Nike Air Force 1 Jester XX 1 Reimagined 'Black & Sonic Yellow",
     price: 642.50,
     image:
-      "https://static.nike.com/a/images/t_prod_ss/w_960,c_limit,f_auto/n9hshsnrlkkbbbacyil0/womens-nike-air-force-1-jester-xx-1-reimagined-black-sonic-yellow-release-date.jpg",
+      "https://images.stockx.com/images/Nike-Air-Force-1-Jester-XX-Black-Sonic-Yellow-Arctic-Orange-W.png?fit=fill&bg=FFFFFF&w=1200&h=857&fm=webp&auto=compress&dpr=2&trim=color&updated_at=1608517232&q=60",
   },
   {
     id: 2,
     brand: "Converse",
     description: "Run Star Hike Three Color Unisex",
     price: 490.17,
-    image: "https://www.converse.com/dw/image/v2/BJJF_PRD/on/demandware.static/-/Sites-cnv-master-catalog-we/default/dw8e5a8824/images/a_107/A08785C_A_107X1.jpg?sw=964",
+    image: "https://s3-alpha-sig.figma.com/img/165b/d68e/27c7b823f60773a53e5092e3329a666c?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=b64wU7IA~oQJyVqCOh2gdISmMl8-Nhrp8OQOxdc-dzZhZPagB7WcNaE8I~n~~OGv7ZtEpU3oJ23ZMskLwiJrGyofHOvGe0HqdIrEtAH6EWNO4e4aQI3iPf22y1CfjQuoUauhYFxwlYs6p0hjt5medlHeD1SH-3JouD3D7noi8LOPaHnv9kvCrT6B2dRnn7msJ2VN39aXjm08KswXKkv6LCYgBwhxm~~fbCLsr-s9k989S7kvmB-btt9122ZxbECoRYVCVY4xVUDi0tm~X5JkMuttLG7ahANkR1kAmPaWpFWmj9vbtSYpUVfEz9a5wGipEdY8637Ky2PFcSVTpPka1w__",
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const products = [
     brand: "New Balance",
     description: "New Balance 574 Rugged White Varsity Green",
     price: 647.97,
-    image: "https://nb.scene7.com/is/image/NB/ml574drm_nb_02_i?$dw_detail_main_lg$&bgc=f1f1f1&layer=1&bgcolor=f1f1f1&blendMode=mult&scale=10&wid=1600&hei=1600",
+    image: "https://i.ebayimg.com/images/g/U~QAAOSwR5Bi~Tut/s-l1200.jpg",
   },
   {
     id: 6,

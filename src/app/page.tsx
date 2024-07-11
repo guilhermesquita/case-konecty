@@ -5,6 +5,7 @@ import Spinner from "@/components/spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Filters } from "../../filters";
+import CardShoes from "@/components/cardMovie";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
@@ -82,11 +83,11 @@ export default function Home() {
         })}
       </section>
 
-      <section className="w-full flex flex-wrap justify-start gap-1 pt-10">
+      <section className="w-full flex flex-wrap justify-start gap-12 pt-10">
         {products.length > 0
           ? filteredProducts.map((product: ProductCardProps) => {
               return (
-                <CardMovie
+                <CardShoes
                   key={product.id}
                   brand={product.brand}
                   id={product.id}
