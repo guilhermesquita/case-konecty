@@ -9,8 +9,10 @@ import CardShoes from "@/components/cardMovie";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>([]);
-  const [brandFilter, setBrandFilter] = useState<string>('Todos');
+  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>(
+    []
+  );
+  const [brandFilter, setBrandFilter] = useState<string>("Todos");
 
   useEffect(() => {
     fetch("/api/products")
@@ -23,7 +25,7 @@ export default function Home() {
 
   const handleChangeBrand = (brand: string) => {
     setBrandFilter(brand);
-    if (brand === 'Todos') {
+    if (brand === "Todos") {
       setFilteredProducts(products);
     } else {
       const filtered = products.filter((product) => product.brand === brand);
@@ -67,14 +69,18 @@ export default function Home() {
         {Filters.map((brand, ind) => {
           const key = ind + 1;
           let isActive = brandFilter === brand;
-          if(brandFilter === "Todos"){
-            isActive = false
+          if (brandFilter === "Todos") {
+            isActive = false;
           }
           return (
             <button
               key={key}
               className={`duration-300 rounded-lg px-5 font-inter font-medium 
-                ${isActive ? 'bg-blueButton text-white' : 'bg-white hover:bg-blueButton hover:text-white'}`}
+                ${
+                  isActive
+                    ? "bg-blueButton text-white"
+                    : "bg-white hover:bg-blueButton hover:text-white"
+                }`}
               onClick={() => handleChangeBrand(brand)}
             >
               {brand}
