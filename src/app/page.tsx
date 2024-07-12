@@ -80,11 +80,13 @@ export default function Home() {
       />
 
       <section className="w-full flex flex-wrap justify-start gap-x-12 gap-y-5 pt-10">
-        {products.length > 0
-          ? filteredProducts.map((product: ProductCardProps) => (
-              <CardShoes key={product.id} {...product} />
-            ))
-          : <div className="w-full flex justify-center">{callbackLoad()}</div>}
+        {products.length > 0 ? (
+          filteredProducts.map((product: ProductCardProps) => (
+            <CardShoes key={product.id} {...product} />
+          ))
+        ) : (
+          <div className="w-full flex justify-center">{callbackLoad()}</div>
+        )}
       </section>
     </main>
   );
@@ -129,7 +131,7 @@ const BrandFilters: React.FC<BrandFiltersProps> = ({
       <button
         key={ind}
         className={`duration-300 rounded-lg px-5 font-inter font-medium ${
-          activeFilter === brand && activeFilter !== 'Todos' 
+          activeFilter === brand && activeFilter !== "Todos"
             ? "bg-blueButton text-white"
             : "bg-white hover:bg-blueButton hover:text-white"
         }`}
