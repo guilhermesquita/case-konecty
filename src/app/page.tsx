@@ -9,7 +9,9 @@ import { Filters } from "../../filters";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>(
+    []
+  );
   const [brandFilter, setBrandFilter] = useState<string>("Todos");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -78,16 +80,11 @@ export default function Home() {
       />
 
       <section className="w-full flex flex-wrap justify-start gap-12 pt-10">
-        {products.length > 0 ? (
-          filteredProducts.map((product: ProductCardProps) => (
-            <CardMovie
-              key={product.id}
-              {...product}
-            />
-          ))
-        ) : (
-          callbackLoad()
-        )}
+        {products.length > 0
+          ? filteredProducts.map((product: ProductCardProps) => (
+              <CardMovie key={product.id} {...product} />
+            ))
+          : callbackLoad()}
       </section>
     </main>
   );
