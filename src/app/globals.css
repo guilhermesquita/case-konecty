@@ -5,5 +5,15 @@
 @tailwind utilities;
 
 body{
-    background-color: #F4F4F4
+    background-color: #F4F4F4;
+}
+.truncated-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3em; /* Altura correspondente ao número de linhas */
+    line-height: 1.5em;
 }

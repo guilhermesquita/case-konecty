@@ -14,6 +14,9 @@ module.exports = {
       },
       backgroundColor: {
         blueButton: '#51BAE8'
+      },
+      borderColor: {
+        hover: '#51BAE8'
       }
     },
   },

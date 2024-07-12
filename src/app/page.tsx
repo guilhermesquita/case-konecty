@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-import CardMovie, { ProductCardProps } from "@/components/cardMovie";
 import Spinner from "@/components/spinner";
 import { Filters } from "../../filters";
+import CardShoes, { ProductCardProps } from "@/components/cardShoes";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
@@ -79,12 +79,12 @@ export default function Home() {
         onChangeBrand={handleChangeBrand}
       />
 
-      <section className="w-full flex flex-wrap justify-start gap-12 pt-10">
+      <section className="w-full flex flex-wrap justify-start gap-x-12 gap-y-5 pt-10">
         {products.length > 0
           ? filteredProducts.map((product: ProductCardProps) => (
-              <CardMovie key={product.id} {...product} />
+              <CardShoes key={product.id} {...product} />
             ))
-          : callbackLoad()}
+          : <div className="w-full flex justify-center">{callbackLoad()}</div>}
       </section>
     </main>
   );
