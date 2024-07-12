@@ -129,7 +129,7 @@ const BrandFilters: React.FC<BrandFiltersProps> = ({
       <button
         key={ind}
         className={`duration-300 rounded-lg px-5 font-inter font-medium ${
-          activeFilter === brand
+          activeFilter === brand && activeFilter !== 'Todos' 
             ? "bg-blueButton text-white"
             : "bg-white hover:bg-blueButton hover:text-white"
         }`}
