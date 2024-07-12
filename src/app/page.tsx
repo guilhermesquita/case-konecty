@@ -63,7 +63,7 @@ export default function Home() {
   };
 
   return (
-    <main className="w-full flex flex-col pl-40 pr-40 pt-10 gap-7">
+    <main className="w-full flex flex-col md:px-40 px-5 pt-10 gap-7">
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
 
       <section>
@@ -79,7 +79,7 @@ export default function Home() {
         onChangeBrand={handleChangeBrand}
       />
 
-      <section className="w-full flex flex-wrap justify-start gap-x-12 gap-y-5 pt-10">
+      <section className="w-full flex flex-wrap justify-start md:gap-x-12 md:gap-y-5 gap-5 pt-10">
         {products.length > 0 ? (
           filteredProducts.map((product: ProductCardProps) => (
             <CardShoes key={product.id} {...product} />
@@ -99,7 +99,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onSearch }) => (
   <section className="w-full">
-    <div className="w-1/4 h-10 flex border-2 bg-white border-white items-center gap-2 pl-5 duration-500 hover:border-black rounded-md">
+    <div className="w-56 h-10 flex border-2 bg-white border-white items-center gap-2 pl-5 duration-500 hover:border-black rounded-md">
       <FontAwesomeIcon
         icon={faMagnifyingGlass}
         style={{ color: "#B9AFB5", fontWeight: "normal" }}
@@ -126,7 +126,7 @@ const BrandFilters: React.FC<BrandFiltersProps> = ({
   activeFilter,
   onChangeBrand,
 }) => (
-  <section className="flex gap-3">
+  <section className="flex gap-3 flex-wrap">
     {filters.map((brand, ind) => (
       <button
         key={ind}
