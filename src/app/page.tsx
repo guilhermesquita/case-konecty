@@ -1,36 +1,59 @@
 "use client";
-import CardMovie, { ProductCardProps } from "@/components/cardMovie";
 import { useEffect, useState } from "react";
-import Spinner from "@/components/spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+import CardMovie, { ProductCardProps } from "@/components/cardMovie";
+import Spinner from "@/components/spinner";
 import { Filters } from "../../filters";
-import CardShoes from "@/components/cardMovie";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductCardProps[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>(
-    []
-  );
+  const [filteredProducts, setFilteredProducts] = useState<ProductCardProps[]>([]);
   const [brandFilter, setBrandFilter] = useState<string>("Todos");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
-    fetch("/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setFilteredProducts(data);
-      });
+    fetchProducts();
   }, []);
+
+  useEffect(() => {
+    filterProducts();
+  }, [brandFilter, searchTerm, products]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("/api/products");
+      const data = await response.json();
+      setProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
+
+  const filterProducts = () => {
+    let filtered = products;
+
+    if (brandFilter !== "Todos") {
+      filtered = filtered.filter((product) => product.brand === brandFilter);
+    }
+
+    if (searchTerm !== "") {
+      filtered = filtered.filter((product) =>
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
 
   const handleChangeBrand = (brand: string) => {
     setBrandFilter(brand);
-    if (brand === "Todos") {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter((product) => product.brand === brand);
-      setFilteredProducts(filtered);
-    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   const callbackLoad = () => {
@@ -39,24 +62,7 @@ export default function Home() {
 
   return (
     <main className="w-full flex flex-col pl-40 pr-40 pt-10 gap-7">
-      <section className="w-full ">
-        <div
-          className="w-1/4 h-10 flex border-2 bg-white border-white
-        items-center gap-2 pl-5 duration-500 hover:border-black 
-        rounded-md"
-        >
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            style={{ color: "#B9AFB5", fontWeight: "normal" }}
-          />
-          <input
-            type="text"
-            placeholder="Buscar Produto"
-            className="w-full h-full 
-            rounded-md outline-0 font-inter placeholder:font-inter"
-          />
-        </div>
-      </section>
+      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
 
       <section>
         <h2 className="font-extrabold text-3xl font-montserrat">Tênis</h2>
@@ -65,46 +71,75 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="flex gap-3">
-        {Filters.map((brand, ind) => {
-          const key = ind + 1;
-          let isActive = brandFilter === brand;
-          if (brandFilter === "Todos") {
-            isActive = false;
-          }
-          return (
-            <button
-              key={key}
-              className={`duration-300 rounded-lg px-5 font-inter font-medium 
-                ${
-                  isActive
-                    ? "bg-blueButton text-white"
-                    : "bg-white hover:bg-blueButton hover:text-white"
-                }`}
-              onClick={() => handleChangeBrand(brand)}
-            >
-              {brand}
-            </button>
-          );
-        })}
-      </section>
+      <BrandFilters
+        filters={Filters}
+        activeFilter={brandFilter}
+        onChangeBrand={handleChangeBrand}
+      />
 
       <section className="w-full flex flex-wrap justify-start gap-12 pt-10">
-        {products.length > 0
-          ? filteredProducts.map((product: ProductCardProps) => {
-              return (
-                <CardShoes
-                  key={product.id}
-                  brand={product.brand}
-                  id={product.id}
-                  image={product.image}
-                  description={product.description}
-                  price={product.price}
-                />
-              );
-            })
-          : callbackLoad()}
+        {products.length > 0 ? (
+          filteredProducts.map((product: ProductCardProps) => (
+            <CardMovie
+              key={product.id}
+              {...product}
+            />
+          ))
+        ) : (
+          callbackLoad()
+        )}
       </section>
     </main>
   );
 }
+
+interface SearchBarProps {
+  searchTerm: string;
+  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onSearch }) => (
+  <section className="w-full">
+    <div className="w-1/4 h-10 flex border-2 bg-white border-white items-center gap-2 pl-5 duration-500 hover:border-black rounded-md">
+      <FontAwesomeIcon
+        icon={faMagnifyingGlass}
+        style={{ color: "#B9AFB5", fontWeight: "normal" }}
+      />
+      <input
+        type="text"
+        placeholder="Buscar Produto"
+        className="w-full h-full rounded-md outline-0 font-inter placeholder:font-inter"
+        value={searchTerm}
+        onChange={onSearch}
+      />
+    </div>
+  </section>
+);
+
+interface BrandFiltersProps {
+  filters: string[];
+  activeFilter: string;
+  onChangeBrand: (brand: string) => void;
+}
+
+const BrandFilters: React.FC<BrandFiltersProps> = ({
+  filters,
+  activeFilter,
+  onChangeBrand,
+}) => (
+  <section className="flex gap-3">
+    {filters.map((brand, ind) => (
+      <button
+        key={ind}
+        className={`duration-300 rounded-lg px-5 font-inter font-medium ${
+          activeFilter === brand
+            ? "bg-blueButton text-white"
+            : "bg-white hover:bg-blueButton hover:text-white"
+        }`}
+        onClick={() => onChangeBrand(brand)}
+      >
+        {brand}
+      </button>
+    ))}
+  </section>
+);
