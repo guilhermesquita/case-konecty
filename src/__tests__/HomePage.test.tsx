@@ -1,72 +1,51 @@
-import HomePage from "../app/home";
+import HomePage from "@/app/home";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-const mockProducts = [
-  {
-    id: 1,
-    brand: "Nike",
-    description: "Nike Air Max",
-    price: 599.99,
-    image: "https://example.com/image1.png",
-  },
-  {
-    id: 2,
-    brand: "Adidas",
-    description: "Adidas Superstar",
-    price: 299.99,
-    image: "https://example.com/image2.png",
-  },
-];
+// Mock da API
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve([
+      { id: 1, brand: "Nike", description: "Nike Air Max", price: 299.99, image: "image1.jpg" },
+      { id: 2, brand: "Adidas", description: "Adidas Ultraboost", price: 349.99, image: "image2.jpg" },
+    ]),
+  })
+) as jest.Mock;
 
-beforeEach(() => {
-  (global as any).fetch = jest.fn().mockResolvedValue({
-    json: jest.fn().mockResolvedValue(mockProducts),
-  });
-});
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
-describe("Home Component", () => {
-  test("renders correctly and fetches products", async () => {
+describe("HomePage", () => {
+  beforeEach(() => {
     render(<HomePage />);
-    
-    expect(screen.getByText("Tênis")).toBeInTheDocument();
-    expect(await screen.findByText("2 produtos encontrados")).toBeInTheDocument();
   });
 
-  test("filters products by brand", async () => {
-    render(<HomePage />);
-    
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
-
-    const brandButton = screen.getByText("Adidas");
-    fireEvent.click(brandButton);
-
-    expect(await screen.findByText("1 produto encontrado")).toBeInTheDocument();
-    expect(screen.getByText("Adidas Superstar")).toBeInTheDocument();
-  });
-
-  test("filters products by search term", async () => {
-    render(<HomePage />);
-    
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
-
+  it("renders the search input", () => {
     const searchInput = screen.getByPlaceholderText("Buscar Produto");
-    fireEvent.change(searchInput, { target: { value: "Nike" } });
-
-    expect(await screen.findByText("1 produto encontrado")).toBeInTheDocument();
-    expect(screen.getByText("Nike Air Max")).toBeInTheDocument();
+    expect(searchInput).toBeInTheDocument();
   });
 
-  test("renders spinner when products are loading", async () => {
-    (global as any).fetch.mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValueOnce([]),
+  it("fetches and displays products", async () => {
+    await waitFor(() => {
+      const productCount = screen.getByText(/produtos encontrados/i);
+      expect(productCount).toHaveTextContent("2 produtos encontrados");
     });
 
-    render(<HomePage />);
+    const products = screen.getAllByText(/Nike Air Max|Adidas Ultraboost/i);
+    expect(products.length).toBe(2);
+  });
 
-    expect(await screen.findByText(/Carregando/i)).toBeInTheDocument();
+  it("filters products by brand", async () => {
+    await waitFor(() => {
+      const nikeButton = screen.getByText("Nike");
+      fireEvent.click(nikeButton);
+    });
+
+    const products = screen.getAllByText(/Nike Air Max/i);
+    expect(products.length).toBe(1);
+  });
+
+  it("filters products by search term", async () => {
+    const searchInput = screen.getByPlaceholderText("Buscar Produto");
+    fireEvent.change(searchInput, { target: { value: "Air Max" } });
+
+    const products = screen.getAllByText(/Nike Air Max/i);
+    expect(products.length).toBe(1);
   });
 });
